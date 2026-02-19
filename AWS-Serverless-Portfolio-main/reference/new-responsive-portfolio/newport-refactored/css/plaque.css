@@ -1,0 +1,348 @@
+/* ============
+   3D PLAQUE CARD
+   ============ */
+:root {
+  --bg0: #05070c;
+  --bg1: #0a0e18;
+  --ink: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.62);
+  --line: rgba(255, 255, 255, 0.1);
+  --accent: rgba(139, 92, 246, 0.95);
+  --accent2: rgba(99, 102, 241, 0.55);
+  --glow: rgba(139, 92, 246, 0.3);
+}
+
+.glass-plaque {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 20% 0%, rgba(139, 92, 246, 0.14), transparent 54%),
+    radial-gradient(120% 90% at 80% 0%, rgba(59, 130, 246, 0.08), transparent 60%),
+    linear-gradient(180deg, var(--bg1), var(--bg0));
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow:
+    0 18px 46px rgba(0, 0, 0, 0.5),
+    0 10px 28px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.62);
+  background-image:
+    radial-gradient(120% 90% at 20% 0%, rgba(139, 92, 246, 0.14), transparent 54%),
+    radial-gradient(120% 90% at 80% 0%, rgba(59, 130, 246, 0.08), transparent 60%),
+    linear-gradient(180deg, var(--bg1), var(--bg0));
+}
+
+.plaque {
+  width: 100%;
+  max-width: 420px;
+  border-radius: 26px;
+}
+
+.plaque.glass-plaque {
+  background-image: linear-gradient(180deg, var(--bg1), var(--bg0));
+}
+
+.glass-plaque::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background:
+    linear-gradient(135deg,
+      rgba(139, 92, 246, 0.9),
+      rgba(99, 102, 241, 0.3),
+      rgba(255, 255, 255, 0.1),
+      rgba(0, 0, 0, 0) 70%);
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+.rivet {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.25), rgba(255, 255, 255, 0.06) 45%, rgba(0, 0, 0, 0.55) 100%);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.1),
+    0 6px 12px rgba(0, 0, 0, 0.35);
+  opacity: 0.75;
+}
+
+.rivet.tl { top: 12px; left: 12px; }
+.rivet.tr { top: 12px; right: 12px; }
+.rivet.bl { bottom: 12px; left: 12px; }
+.rivet.br { bottom: 12px; right: 12px; }
+
+.plaque-hero {
+  position: relative;
+  height: 320px;
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.35));
+}
+
+.plaque-hero::before {
+  content: none;
+}
+
+.plaque-hero::after {
+  content: none;
+}
+
+.plaque-hero-frame {
+  position: absolute;
+  inset: 14px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  background: linear-gradient(180deg, rgba(148, 163, 184, 0.03), rgba(2, 6, 23, 0.16));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    inset 0 0 0 1px rgba(59, 130, 246, 0.08),
+    inset 0 -24px 36px rgba(2, 6, 23, 0.46),
+    inset 0 12px 24px rgba(2, 6, 23, 0.35);
+  pointer-events: none;
+}
+
+.plaque-hero-frame::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  opacity: 0.09;
+  background:
+    linear-gradient(rgba(191, 219, 254, 0.95), rgba(191, 219, 254, 0.95)) left 10px top 10px / 14px 1px no-repeat,
+    linear-gradient(rgba(191, 219, 254, 0.95), rgba(191, 219, 254, 0.95)) left 10px top 10px / 1px 14px no-repeat,
+    linear-gradient(rgba(191, 219, 254, 0.95), rgba(191, 219, 254, 0.95)) right 10px top 10px / 14px 1px no-repeat,
+    linear-gradient(rgba(191, 219, 254, 0.95), rgba(191, 219, 254, 0.95)) right 10px top 10px / 1px 14px no-repeat,
+    linear-gradient(rgba(191, 219, 254, 0.95), rgba(191, 219, 254, 0.95)) left 10px bottom 10px / 14px 1px no-repeat,
+    linear-gradient(rgba(191, 219, 254, 0.95), rgba(191, 219, 254, 0.95)) left 10px bottom 10px / 1px 14px no-repeat,
+    linear-gradient(rgba(191, 219, 254, 0.95), rgba(191, 219, 254, 0.95)) right 10px bottom 10px / 14px 1px no-repeat,
+    linear-gradient(rgba(191, 219, 254, 0.95), rgba(191, 219, 254, 0.95)) right 10px bottom 10px / 1px 14px no-repeat;
+  pointer-events: none;
+}
+
+.plaque-hero-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.24'/%3E%3C/svg%3E");
+  background-size: cover;
+  opacity: 0.06;
+  mix-blend-mode: screen;
+  pointer-events: none;
+}
+
+.hero-img {
+  position: absolute;
+  inset: 22px;
+  width: calc(100% - 44px);
+  height: calc(100% - 44px);
+  object-fit: cover;
+  border-radius: 22px;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.1),
+    0 16px 40px rgba(0, 0, 0, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.status-pill {
+  position: absolute;
+  left: clamp(26px, 2.2vw, 34px);
+  bottom: 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  backdrop-filter: none;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 13px;
+  font-weight: 500;
+  box-shadow: none;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.55);
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 35% 35%, rgba(255, 255, 255, 0.9), rgba(34, 197, 94, 0.85) 40%, rgba(0, 0, 0, 0.65) 100%);
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1), 0 0 16px rgba(34, 197, 94, 0.25);
+  animation: status-pulse 2.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes status-pulse {
+  0%,
+  100% {
+    opacity: 0.95;
+    transform: scale(1);
+  }
+  55% {
+    opacity: 0.45;
+    transform: scale(1.14);
+  }
+}
+
+.badge-id-line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 18px 6px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(90deg, rgba(15, 23, 42, 0.52), rgba(30, 41, 59, 0.24), rgba(15, 23, 42, 0.52));
+}
+
+.badge-id-name {
+  display: block;
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.58);
+  white-space: nowrap;
+}
+
+.badge-id-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(148, 163, 184, 0.78);
+  white-space: nowrap;
+}
+
+.badge-id-code {
+  color: rgba(196, 181, 253, 0.78);
+}
+
+.badge-verified {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 52px;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background:
+    radial-gradient(circle at 30% 30%, rgba(196, 181, 253, 0.32), rgba(99, 102, 241, 0.12) 45%, rgba(2, 6, 23, 0.85) 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    inset 0 -6px 10px rgba(2, 6, 23, 0.36),
+    0 4px 10px rgba(0, 0, 0, 0.28);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(226, 232, 240, 0.86);
+  white-space: nowrap;
+}
+
+.nameplate {
+  position: relative;
+  padding: 18px 18px 20px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(0, 0, 0, 0.2)),
+    radial-gradient(120% 120% at 50% 0%, rgba(139, 92, 246, 0.12), transparent 60%);
+}
+
+.nameplate-topline {
+  height: 1px;
+  margin-bottom: 14px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+  opacity: 0.9;
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.title-text {
+  display: block;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  font-size: 12px;
+  text-transform: uppercase;
+  text-shadow:
+    0 1px 0 rgba(0, 0, 0, 0.65),
+    0 -1px 0 rgba(255, 255, 255, 0.06);
+}
+
+.chip-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 9px;
+}
+
+@media (max-width: 420px) {
+  .chip-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 320px) {
+  .chip-row { grid-template-columns: 1fr; }
+}
+
+.chip {
+  border-radius: 14px;
+  padding: 10px 10px 9px;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.04), rgba(6, 9, 18, 0.72));
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    inset 0 -14px 20px rgba(0, 0, 0, 0.56),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 7px 14px rgba(0, 0, 0, 0.4);
+}
+
+.chip-label-row {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.chip-label-row svg {
+  width: 20px;
+  height: 20px;
+  opacity: 0.72;
+  color: rgba(191, 219, 254, 0.86);
+}
+
+.chip-label-row svg.scope-icon {
+  transform: translateY(-2px);
+}
+
+.chip-label {
+  font-size: 13px;
+  line-height: 1.08;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.58);
+  text-align: center;
+}
+
+.chip-value {
+  margin-top: 8px;
+  font-size: 11px;
+  line-height: 1.15;
+  font-weight: 700;
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+}

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Responsive Tailwind Baseline"
+  short_description: "Preserve 1920x1200 layouts with Tailwind responsive scaling"
+  default_prompt: "Use this skill only in newport-refactored to keep the design anchored to a 1920x1200 baseline while scaling proportionally on larger screens with Tailwind classes, viewport rules, and sensible width/height caps."

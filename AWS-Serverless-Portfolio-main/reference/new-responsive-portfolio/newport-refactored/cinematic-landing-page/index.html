@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cinematic Landing</title>
+
+  <!-- Critical CSS: Prevent flash of unstyled content on page load -->
+  <style>
+    /* Completely hide button until JS adds .visible class */
+    #launchButton {
+      opacity: 0 !important;
+      visibility: hidden !important;
+    }
+    #launchButton.visible {
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    /* Hide stats completely until launch sequence */
+    #stats {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      display: none !important;
+    }
+    #stats.revealing {
+      opacity: 1 !important;
+      visibility: visible !important;
+      display: none !important;
+    }
+    /* Ensure container has no background */
+    #buttonContainer { 
+      background: transparent !important; 
+    }
+  </style>
+
+  <!-- Local CSS (folder-relative!) -->
+  <link rel="stylesheet" href="./css/main.css"/>
+  <link rel="stylesheet" href="./css/responsive-scaling.css"/>
+  <link rel="stylesheet" href="./css/cinematic-landing.css"/>
+
+  <!-- Tailwind config must be set before the CDN loads -->
+  <script>
+    tailwind = {
+      config: {
+        theme: {
+          extend: {
+            screens: {
+              'xxs': '320px',
+              'xs': '375px',
+              'xsm': '425px',
+              'sm': '640px',
+              'md': '768px',
+              'lg': '1024px',
+              'xl': '1440px',
+              '2xl': '2560px',
+            }
+          }
+        }
+      }
+    };
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-transparent" style="background: transparent;">
+
+  <!-- Full-screen canvas layer - z-index -50 to stay behind all button effects -->
+  <canvas id="cineCanvas" class="fixed inset-0 w-full h-full" style="z-index: -50;" aria-hidden="true"></canvas>
+
+  <!-- Hero Section with Counters -->
+  <section
+    class="relative flex flex-col justify-center items-center text-center px-2 xxs:px-2 xs:px-3 xsm:px-3 sm:px-4 md:px-6 z-10"
+    style="min-height:100vh; background: transparent;"
+    x-data="CinematicLanding()">
+
+    <h1 id="heroTitle" class="
+    hero-text
+    font-bold
+    text-[clamp(2.5rem,6vw,5.5rem)]
+    leading-[1.1]
+    mb-4 xxs:mb-4 xs:mb-5 xsm:mb-6 sm:mb-7 md:mb-9
+    bg-gradient-to-r from-purple-400 to-indigo-500
+    bg-clip-text text-transparent
+  ">
+      DEPLOYING DREAMS
+    </h1>
+
+    <h2 id="heroSubtitle" class="
+    hero-text
+    font-bold
+    text-[clamp(0.850rem,3vw,1.5rem)]
+    mb-4 xxs:mb-4 xs:mb-5 xsm:mb-6 sm:mb-7 md:mb-9
+    bg-gradient-to-r from-purple-400 to-indigo-500
+    bg-clip-text text-transparent
+    text-center
+    is-hidden
+  ">
+      Sometimes Even Successfully
+    </h2>
+
+    <!-- Button positioned for balanced spacing -->
+    <div id="buttonContainer" class="mt-2 xxs:mt-2 xs:mt-3 xsm:mt-4 sm:mt-5 md:mt-6 flex justify-center" style="position: relative; z-index: 10;">
+      <button 
+        id="launchButton" 
+        class="btn primary is-hidden" 
+        type="button" 
+        aria-label="Launch"
+        style="opacity: 0; visibility: hidden; position: relative; z-index: 10;"
+        @click="launch()"
+        @keydown.enter="launch()"
+        @keydown.space.prevent="launch()">
+        <span class="btn__surface">Launch</span>
+      </button>
+    </div>
+
+    <!-- Stats (hidden initially, shown after launch animation) -->
+    <div id="stats" class="
+    hero-text
+    flex flex-wrap justify-center items-center
+    gap-[clamp(0.375rem,1vw,1.5rem)]
+    text-[clamp(0.5875rem,1.2vw,1.125rem)]
+    font-semibold
+    max-w-[98vw] mx-auto whitespace-nowrap
+    bg-gradient-to-r from-purple-400 to-indigo-500 bg-clip-text text-transparent
+    is-hidden
+  ">
+      <div class="flex items-center">
+        <span class="ml-3">Projects:</span>
+        <span class="text-white inline-block w-[2ch] text-right" data-target="6">0</span>
+        <span class="plus-sign inline-block w-[1.5ch] text-transparent bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text">+</span>
+      </div>
+      <div class="flex items-center">
+        <span>Certifications:</span>
+        <span class="text-white inline-block w-[2ch] text-right" data-target="3">0</span>
+        <span class="plus-sign inline-block w-[1.5ch] text-transparent bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text">+</span>
+      </div>
+      <div class="flex items-center">
+        <span>In-Progress:</span>
+        <span class="text-white inline-block w-[2ch] text-right" data-target="2">0</span>
+        <span class="plus-sign inline-block w-[1.5ch] text-transparent bg-gradient-to-r from-purple-400 to-indigo-400 bg-clip-text">+</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Load component module first (registers CinematicLanding on window) -->
+  <script type="module">
+    import { CinematicLanding } from './js/cinematic-landing.js';
+    window.CinematicLanding = CinematicLanding;
+    
+    // Initialize Alpine after component is registered
+    import Alpine from 'https://unpkg.com/alpinejs@3.14.1/dist/module.esm.js';
+    window.Alpine = Alpine;
+    Alpine.start();
+  </script>
+</body>
+</html>
