@@ -19,7 +19,11 @@ npm install
 npm run dev
 ```
 
-Then open `http://127.0.0.1:4173`.
+Then open the URL it prints (default: `http://127.0.0.1:4173`). If `4173` is already in use, the dev server will automatically try the next port.
+If another `npm run dev` is already running for this folder, starting a new one will shut down the old one first (set `DEV_SERVER_REPLACE=0` to disable).
+
+The dev server includes live reload: edits to `index.html`, `styles.css`, `main.js`, or assets will refresh the page automatically.
+Set `LIVE_RELOAD=0` to disable.
 
 Or serve the folder with any static server. Example:
 

@@ -142,6 +142,8 @@ svg {
 
 /* Top bar style matching reference */
 .top-profile {
+  --hdr-gutter: clamp(16px, calc((100vw / 1920) * 64), 40px);
+  --divider-width: 1px;
   position: relative;
   isolation: isolate;
   background:
@@ -186,19 +188,31 @@ svg {
 
 .top-profile-layout {
   display: grid;
-  --edge-pad: clamp(0.5rem, 0.9vw, 1rem);
-  grid-template-columns: minmax(126px, auto) minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   align-items: center;
-  gap: clamp(0.95rem, 1.25vw, 1.6rem);
+  row-gap: clamp(0.95rem, 1.25vw, 1.6rem);
+  column-gap: 0;
   position: relative;
   z-index: 1;
+}
+
+.top-profile-divider {
+  position: absolute;
+  top: clamp(0.35rem, 0.7vw, 0.7rem);
+  bottom: clamp(0.35rem, 0.7vw, 0.7rem);
+  left: 50%;
+  width: var(--divider-width);
+  transform: translateX(-50%);
+  pointer-events: none;
+  background: rgba(76, 94, 124, 0.58);
+  box-shadow: 0 0 0 1px rgba(26, 38, 58, 0.12);
 }
 
 .top-profile-avatar {
   flex: 0 0 auto;
   display: flex;
   justify-content: center;
-  margin-left: var(--edge-pad);
+  margin-left: 0;
 }
 
 .top-profile-avatar .profile-frame {
@@ -208,62 +222,36 @@ svg {
 }
 
 .top-profile-content {
-  --cv-lock-left: 6.86rem;
-  --cv-lock-bottom: -0.02rem;
   min-width: 0;
-  flex: 1 1 auto;
-  padding-right: var(--edge-pad);
   position: relative;
-}
-
-.top-profile-split {
-  display: grid;
-  grid-template-columns: minmax(250px, max-content) minmax(0, 1fr);
-  align-items: center;
-  gap: clamp(0.8rem, 1.08vw, 1.28rem);
 }
 
 .top-profile-intro {
   min-width: 0;
-  width: auto;
+  width: 100%;
   max-width: 100%;
+  box-sizing: border-box;
   margin-inline: 0;
-  padding-left: clamp(0.35rem, 0.75vw, 0.9rem);
-  padding-right: clamp(0.6rem, 1.05vw, 1.2rem);
+  padding-inline: 0;
 }
 
 .top-profile-meta-panel {
   min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
+  padding-left: 0;
   padding-right: 0;
   transform: translateY(clamp(-0.22rem, -0.2vw, -0.12rem));
 }
 
 .top-profile-action {
-  position: absolute;
-  left: var(--cv-lock-left);
-  right: auto;
-  bottom: var(--cv-lock-bottom);
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  margin-top: 0;
+  margin: 0;
   padding: 0;
-}
-
-@media (min-width: 1280px) {
-  .top-profile-content {
-    --cv-lock-left: 7.31rem;
-    --cv-lock-bottom: -0.06rem;
-  }
-}
-
-@media (min-width: 1536px) {
-  .top-profile-content {
-    --cv-lock-left: 7.76rem;
-    --cv-lock-bottom: -0.10rem;
-  }
 }
 
 .top-profile-name {
@@ -299,8 +287,8 @@ svg {
   width: 100%;
   align-items: center;
   padding-inline: var(--meta-side-space);
-  transform: translateX(clamp(0.45rem, 0.8vw, 0.9rem));
-  border-left: 1px solid rgba(76, 94, 124, 0.58);
+  border-left: 0;
+  min-width: 0;
 }
 
 .top-profile-meta > div:nth-child(1) {
@@ -316,6 +304,7 @@ svg {
 }
 
 .top-profile-meta > div:nth-child(-n + 3) {
+  min-width: 0;
   display: grid;
   grid-template-rows: auto auto;
   align-content: center;
@@ -432,6 +421,14 @@ svg {
   padding: 0;
 }
 
+.meta-email-text {
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 .location-flag {
   width: 14px;
   height: 10px;
@@ -462,6 +459,10 @@ svg {
 }
 
 @media (max-width: 1024px) {
+  .top-profile-divider {
+    display: none;
+  }
+
   .top-profile-layout {
     align-items: flex-start;
     grid-template-columns: 1fr;
@@ -475,21 +476,6 @@ svg {
 
   .top-profile-avatar .profile-frame {
     transform: none;
-  }
-
-  .top-profile-action {
-    position: static;
-    left: auto;
-    right: auto;
-    bottom: auto;
-    width: auto;
-    justify-content: flex-start;
-    margin: 0.45rem 0 0;
-    padding-bottom: 0;
-  }
-
-  .top-profile-content {
-    padding-right: 0;
   }
 
   .top-profile-meta {
@@ -508,16 +494,6 @@ svg {
   .top-profile-meta-panel {
     display: block;
     transform: none;
-  }
-
-  .top-profile-split {
-    grid-template-columns: 1fr;
-  }
-
-  .top-profile-intro {
-    width: 100%;
-    margin-inline: 0;
-    padding-inline: 0;
   }
 
   .top-profile-meta-panel {

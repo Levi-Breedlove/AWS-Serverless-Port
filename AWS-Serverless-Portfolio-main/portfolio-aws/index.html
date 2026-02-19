@@ -66,134 +66,173 @@
              pt-0
              pb-6 xxs:pb-6 xs:pb-6 xsm:pb-6 sm:pb-8 md:pb-8"
     >
-      <header id="about" class="glass-card plaque-surface top-profile px-5 xsm:px-6 sm:px-7 md:px-7 py-4 md:py-4">
+      <header
+        id="about"
+        data-testid="hdr-card"
+        class="glass-card plaque-surface top-profile relative"
+      >
         <div class="top-profile-matrix" aria-hidden="true">
           <canvas class="top-profile-matrix-canvas" data-matrix-rain></canvas>
         </div>
-        <div class="top-profile-layout">
-          <div class="top-profile-avatar" aria-hidden="true">
-            <div class="profile-frame">
-              <div class="profile-frame-surface">
-                <div class="profile-core">
-                  <span>LB</span>
+        <span
+          class="top-profile-divider absolute left-1/2 -translate-x-1/2"
+          data-testid="hdr-divider"
+          aria-hidden="true"
+        ></span>
+
+        <div
+          class="relative z-[1] flex flex-col gap-y-[clamp(0.95rem,1.25vw,1.6rem)] min-[1025px]:absolute min-[1025px]:inset-0 min-[1025px]:block"
+        >
+          <div
+            data-testid="hdr-left"
+            class="min-[1025px]:absolute min-[1025px]:inset-y-0 min-[1025px]:left-0 min-[1025px]:right-1/2 min-[1025px]:flex min-[1025px]:items-center pl-[var(--hdr-gutter)] pr-[var(--hdr-gutter)] min-w-0"
+          >
+            <div class="w-full min-w-0" data-testid="hdr-leftgroup">
+              <div
+                class="grid min-w-0 grid-cols-[auto_minmax(0,1fr)] grid-rows-[1fr_auto] gap-x-[var(--hdr-gutter)] gap-y-3 min-[1025px]:h-full"
+              >
+                <div
+                  class="top-profile-avatar self-center"
+                  data-testid="hdr-avatar"
+                  aria-hidden="true"
+                  style="grid-row: 1 / span 2;"
+                >
+                  <div class="profile-frame">
+                    <div class="profile-frame-surface">
+                      <div class="profile-core">
+                        <span>LB</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div
+                  class="top-profile-intro min-w-0 self-start min-[1025px]:translate-y-[clamp(34px,2.33vw,45px)]"
+                  data-testid="hdr-nameblock"
+                >
+                  <h1 class="top-profile-name truncate">Levi Breedlove</h1>
+                  <p class="top-profile-role truncate">DevOps | SRE | AWS Cloud Engineer</p>
+                </div>
+
+                <div class="min-w-0 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 self-end">
+                  <div class="top-socials" data-testid="hdr-icons">
+                    <a href="#" class="social-link" aria-label="GitHub">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-2.132 1.03-2.881-.103-.253-.447-1.36.098-2.839 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.479.202 2.586.1 2.838.64.75 1.03 1.788 1.03 2.881 0 3.847-2.337 4.687-4.565 4.935.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"
+                        ></path>
+                      </svg>
+                    </a>
+                    <a href="#" class="social-link" aria-label="LinkedIn">
+                      <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                          fill-rule="evenodd"
+                          clip-rule="evenodd"
+                          d="M19 0H5C2.239 0 0 2.239 0 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5V5c0-2.761-2.238-5-5-5ZM8 19H5V8h3v11Zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764ZM20 19h-3v-5.604c0-3.368-4-3.113-4 0V19h-3V8h3v1.765c1.396-2.586 7-2.777 7 2.476V19Z"
+                        ></path>
+                      </svg>
+                    </a>
+                  </div>
+
+                  <div class="top-profile-action" data-testid="hdr-cta">
+                    <a
+                      class="btn primary btn-static btn-cv btn-dust-in !inline-flex items-center justify-center box-border shrink-0 rounded-full border border-white/10 [--btn-w:clamp(122px,8.8vw,142px)] [--btn-h:clamp(32px,2.5vw,38px)] [--ring-thickness:4px]"
+                      style="--d: 240ms;"
+                      href="data:text/csv;charset=utf-8,Section%2CItem%2CDetails%0AProfile%2CName%2CLevi%20Breedlove%0AProfile%2CTitle%2CAWS%20Cloud%20Application%20Developer%0AProfile%2CEmail%2Clevi%40cloud.dev%0A"
+                      download="Levi-Breedlove-CV.csv"
+                      aria-label="Download CV"
+                      data-testid="download-cv"
+                    >
+                      <span class="btn__surface inline-flex h-full w-full box-border items-center justify-center gap-1.5 rounded-full border border-indigo-300/20 font-extrabold uppercase tracking-[0.08em] leading-none text-slate-100">
+                        Download CV
+                        <svg
+                          aria-hidden="true"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          class="w-3 h-3 opacity-90"
+                        >
+                          <path d="M12 3v12" />
+                          <path d="m7 10 5 5 5-5" />
+                          <path d="M5 21h14" />
+                        </svg>
+                      </span>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div class="top-profile-content">
-            <div class="top-profile-split">
-              <div class="top-profile-intro">
-                <h1 class="top-profile-name">Levi Breedlove</h1>
-                <p class="top-profile-role">DevOps | SRE | AWS Cloud Engineer</p>
-
-                <div class="top-socials top-socials-inline">
-                  <a href="#" class="social-link" aria-label="GitHub">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-2.132 1.03-2.881-.103-.253-.447-1.36.098-2.839 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.479.202 2.586.1 2.838.64.75 1.03 1.788 1.03 2.881 0 3.847-2.337 4.687-4.565 4.935.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2Z"
-                      ></path>
-                    </svg>
-                  </a>
-                  <a href="#" class="social-link" aria-label="LinkedIn">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path
-                        fill-rule="evenodd"
-                        clip-rule="evenodd"
-                        d="M19 0H5C2.239 0 0 2.239 0 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5V5c0-2.761-2.238-5-5-5ZM8 19H5V8h3v11Zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764ZM20 19h-3v-5.604c0-3.368-4-3.113-4 0V19h-3V8h3v1.765c1.396-2.586 7-2.777 7 2.476V19Z"
-                      ></path>
-                    </svg>
-                  </a>
-                </div>
-              </div>
-
-              <div class="top-profile-meta-panel">
-                <div class="top-profile-meta">
-                  <div>
-                    <p class="meta-kicker">Email</p>
-                    <button id="copyEmail" class="meta-value inline-flex items-center gap-1" type="button" aria-label="Copy email address">
-                      levi@cloud.dev
-                      <span class="material-icons-round text-[15px]">content_copy</span>
-                    </button>
-                  </div>
-
-                  <div>
-                    <p class="meta-kicker">Location</p>
-                    <p class="meta-value inline-flex items-center gap-1.5">
-                      <span>United States</span>
-                      <svg class="location-flag" viewBox="0 0 19 13" aria-hidden="true" focusable="false">
-                        <rect width="19" height="13" fill="#B22234"></rect>
-                        <path d="M0 2h19M0 4h19M0 6h19M0 8h19M0 10h19M0 12h19" stroke="#FFFFFF" stroke-width="1"></path>
-                        <rect width="8.2" height="7" fill="#3C3B6E"></rect>
-                        <g fill="#FFFFFF">
-                          <circle cx="1.2" cy="1.2" r="0.35"></circle>
-                          <circle cx="2.5" cy="1.2" r="0.35"></circle>
-                          <circle cx="3.8" cy="1.2" r="0.35"></circle>
-                          <circle cx="5.1" cy="1.2" r="0.35"></circle>
-                          <circle cx="6.4" cy="1.2" r="0.35"></circle>
-                          <circle cx="1.9" cy="2.3" r="0.35"></circle>
-                          <circle cx="3.2" cy="2.3" r="0.35"></circle>
-                          <circle cx="4.5" cy="2.3" r="0.35"></circle>
-                          <circle cx="5.8" cy="2.3" r="0.35"></circle>
-                          <circle cx="1.2" cy="3.4" r="0.35"></circle>
-                          <circle cx="2.5" cy="3.4" r="0.35"></circle>
-                          <circle cx="3.8" cy="3.4" r="0.35"></circle>
-                          <circle cx="5.1" cy="3.4" r="0.35"></circle>
-                          <circle cx="6.4" cy="3.4" r="0.35"></circle>
-                          <circle cx="1.9" cy="4.5" r="0.35"></circle>
-                          <circle cx="3.2" cy="4.5" r="0.35"></circle>
-                          <circle cx="4.5" cy="4.5" r="0.35"></circle>
-                          <circle cx="5.8" cy="4.5" r="0.35"></circle>
-                          <circle cx="1.2" cy="5.6" r="0.35"></circle>
-                          <circle cx="2.5" cy="5.6" r="0.35"></circle>
-                          <circle cx="3.8" cy="5.6" r="0.35"></circle>
-                          <circle cx="5.1" cy="5.6" r="0.35"></circle>
-                          <circle cx="6.4" cy="5.6" r="0.35"></circle>
-                        </g>
-                      </svg>
-                    </p>
-                  </div>
-
-                  <div>
-                    <p class="meta-kicker">Status</p>
-                    <p class="meta-value status-open inline-flex items-center gap-2">
-                      <span class="status-dot" aria-hidden="true"></span>
-                      Open for work
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="top-profile-action">
-              <a
-                class="btn primary btn-static btn-cv btn-dust-in !inline-flex items-center justify-center box-border shrink-0 rounded-full border border-white/10 [--btn-w:clamp(122px,8.8vw,142px)] [--btn-h:clamp(32px,2.5vw,38px)] [--ring-thickness:4px]"
-                style="--d: 240ms;"
-                href="data:text/csv;charset=utf-8,Section%2CItem%2CDetails%0AProfile%2CName%2CLevi%20Breedlove%0AProfile%2CTitle%2CAWS%20Cloud%20Application%20Developer%0AProfile%2CEmail%2Clevi%40cloud.dev%0A"
-                download="Levi-Breedlove-CV.csv"
-                aria-label="Download CV"
-                data-testid="download-cv"
-              >
-                <span class="btn__surface inline-flex h-full w-full box-border items-center justify-center gap-1.5 rounded-full border border-indigo-300/20 font-extrabold uppercase tracking-[0.08em] leading-none text-slate-100">
-                  Download CV
-                  <svg
-                    aria-hidden="true"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="w-3 h-3 opacity-90"
+          <div
+            data-testid="hdr-right"
+            class="min-[1025px]:absolute min-[1025px]:inset-y-0 min-[1025px]:left-1/2 min-[1025px]:right-0 min-[1025px]:flex min-[1025px]:items-center pl-[var(--hdr-gutter)] pr-[var(--hdr-gutter)] min-w-0"
+          >
+            <div class="top-profile-meta-panel" data-testid="hdr-rightgroup">
+              <div class="top-profile-meta">
+                <div class="min-w-0" data-testid="hdr-email">
+                  <p class="meta-kicker">Email</p>
+                  <button
+                    id="copyEmail"
+                    class="meta-value inline-flex min-w-0 items-center gap-1"
+                    type="button"
+                    aria-label="Copy email address"
                   >
-                    <path d="M12 3v12" />
-                    <path d="m7 10 5 5 5-5" />
-                    <path d="M5 21h14" />
-                  </svg>
-                </span>
-              </a>
+                    <span class="meta-email-text min-w-0 truncate">levi@cloud.dev</span>
+                    <span class="material-icons-round text-[15px]">content_copy</span>
+                  </button>
+                </div>
+
+                <div class="min-w-0" data-testid="hdr-location">
+                  <p class="meta-kicker">Location</p>
+                  <p class="meta-value inline-flex items-center gap-1.5">
+                    <span>United States</span>
+                    <svg class="location-flag" viewBox="0 0 19 13" aria-hidden="true" focusable="false">
+                      <rect width="19" height="13" fill="#B22234"></rect>
+                      <path d="M0 2h19M0 4h19M0 6h19M0 8h19M0 10h19M0 12h19" stroke="#FFFFFF" stroke-width="1"></path>
+                      <rect width="8.2" height="7" fill="#3C3B6E"></rect>
+                      <g fill="#FFFFFF">
+                        <circle cx="1.2" cy="1.2" r="0.35"></circle>
+                        <circle cx="2.5" cy="1.2" r="0.35"></circle>
+                        <circle cx="3.8" cy="1.2" r="0.35"></circle>
+                        <circle cx="5.1" cy="1.2" r="0.35"></circle>
+                        <circle cx="6.4" cy="1.2" r="0.35"></circle>
+                        <circle cx="1.9" cy="2.3" r="0.35"></circle>
+                        <circle cx="3.2" cy="2.3" r="0.35"></circle>
+                        <circle cx="4.5" cy="2.3" r="0.35"></circle>
+                        <circle cx="5.8" cy="2.3" r="0.35"></circle>
+                        <circle cx="1.2" cy="3.4" r="0.35"></circle>
+                        <circle cx="2.5" cy="3.4" r="0.35"></circle>
+                        <circle cx="3.8" cy="3.4" r="0.35"></circle>
+                        <circle cx="5.1" cy="3.4" r="0.35"></circle>
+                        <circle cx="6.4" cy="3.4" r="0.35"></circle>
+                        <circle cx="1.9" cy="4.5" r="0.35"></circle>
+                        <circle cx="3.2" cy="4.5" r="0.35"></circle>
+                        <circle cx="4.5" cy="4.5" r="0.35"></circle>
+                        <circle cx="5.8" cy="4.5" r="0.35"></circle>
+                        <circle cx="1.2" cy="5.6" r="0.35"></circle>
+                        <circle cx="2.5" cy="5.6" r="0.35"></circle>
+                        <circle cx="3.8" cy="5.6" r="0.35"></circle>
+                        <circle cx="5.1" cy="5.6" r="0.35"></circle>
+                        <circle cx="6.4" cy="5.6" r="0.35"></circle>
+                      </g>
+                    </svg>
+                  </p>
+                </div>
+
+                <div class="min-w-0" data-testid="hdr-status">
+                  <p class="meta-kicker">Status</p>
+                  <p class="meta-value status-open inline-flex items-center gap-2">
+                    <span class="status-dot" aria-hidden="true"></span>
+                    Open for work
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

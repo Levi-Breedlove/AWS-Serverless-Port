@@ -7,6 +7,6 @@
     "test:cv-layout:update": "playwright test tests/cv-button-layout.spec.js --update-snapshots"
   },
   "devDependencies": {
-    "@playwright/test": "1.52.0"
+    "@playwright/test": "^1.58.2"
   }
 }
