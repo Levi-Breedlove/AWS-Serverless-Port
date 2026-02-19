@@ -66,19 +66,20 @@
              pt-0
              pb-6 xxs:pb-6 xs:pb-6 xsm:pb-6 sm:pb-8 md:pb-8"
     >
-      <header
-        id="about"
-        data-testid="hdr-card"
-        class="glass-card plaque-surface top-profile relative"
-      >
+	      <header
+	        id="about"
+		        data-testid="hdr-card"
+		        class="glass-card plaque-surface top-profile relative"
+		        style="--divider-shift: clamp(-200px, calc((100vw / 1920) * -25.703125), 200px); --cta-shift: clamp(-200px, calc((100vw / 1920) * -54.117), 200px);"
+		      >
         <div class="top-profile-matrix" aria-hidden="true">
           <canvas class="top-profile-matrix-canvas" data-matrix-rain></canvas>
         </div>
-        <span
-          class="top-profile-divider absolute left-1/2 -translate-x-1/2"
-          data-testid="hdr-divider"
-          aria-hidden="true"
-        ></span>
+	        <span
+	          class="top-profile-divider"
+	          data-testid="hdr-divider"
+	          aria-hidden="true"
+	        ></span>
 
         <div
           class="relative z-[1] flex flex-col gap-y-[clamp(0.95rem,1.25vw,1.6rem)] min-[1025px]:absolute min-[1025px]:inset-0 min-[1025px]:block"
@@ -106,13 +107,16 @@
                   </div>
                 </div>
 
-                <div
-                  class="top-profile-intro min-w-0 self-start min-[1025px]:translate-y-[clamp(34px,2.33vw,45px)]"
-                  data-testid="hdr-nameblock"
-                >
-                  <h1 class="top-profile-name truncate">Levi Breedlove</h1>
-                  <p class="top-profile-role truncate">DevOps | SRE | AWS Cloud Engineer</p>
-                </div>
+	                <div
+	                  class="top-profile-intro min-w-0 self-start min-[1025px]:translate-y-[clamp(34px,2.33vw,45px)]"
+	                  data-testid="hdr-nameblock"
+	                >
+	                  <h1 class="top-profile-name truncate">Levi Breedlove</h1>
+	                  <p class="top-profile-role truncate">
+	                    DevOps | SRE <span data-testid="hdr-role-anchor">|</span> AWS Cloud
+	                    <span data-testid="hdr-role-engineer">Engineer</span>
+	                  </p>
+	                </div>
 
                 <div class="min-w-0 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 self-end">
                   <div class="top-socials" data-testid="hdr-icons">

@@ -62,6 +62,24 @@ function expectBoxClose(actual, expected, tolerancePx = 1) {
   }
 }
 
+function parseTranslateX(transform) {
+  if (!transform || transform === 'none') return 0
+
+  const matrixMatch = transform.match(/^matrix\((.+)\)$/)
+  if (matrixMatch) {
+    const parts = matrixMatch[1].split(',').map((value) => Number.parseFloat(value.trim()))
+    return Number.isFinite(parts[4]) ? parts[4] : 0
+  }
+
+  const matrix3dMatch = transform.match(/^matrix3d\((.+)\)$/)
+  if (matrix3dMatch) {
+    const parts = matrix3dMatch[1].split(',').map((value) => Number.parseFloat(value.trim()))
+    return Number.isFinite(parts[12]) ? parts[12] : 0
+  }
+
+  return 0
+}
+
 test('freezes right panel layout at 1920x1200', async ({ page }) => {
   const fileUrl = `file://${path.resolve(__dirname, '..', 'index.html')}`
   await page.goto(fileUrl, { waitUntil: 'load' })
@@ -72,11 +90,14 @@ test('freezes right panel layout at 1920x1200', async ({ page }) => {
 
   const cardBox = await page.getByTestId('hdr-card').boundingBox()
   const dividerBox = await page.getByTestId('hdr-divider').boundingBox()
+  const anchorBox = await page.getByTestId('hdr-role-anchor').boundingBox()
+  const engineerBox = await page.getByTestId('hdr-role-engineer').boundingBox()
+  const ctaBox = await page.getByTestId('download-cv').boundingBox()
   expect(cardBox, 'hdr-card should have a bounding box').toBeTruthy()
   expect(dividerBox, 'hdr-divider should have a bounding box').toBeTruthy()
-  const cardCenterX = cardBox.x + cardBox.width / 2
-  const dividerCenterX = dividerBox.x + dividerBox.width / 2
-  expect(Math.abs(dividerCenterX - cardCenterX), 'divider centered at 50%').toBeLessThanOrEqual(1)
+  expect(anchorBox, 'hdr-role-anchor should have a bounding box').toBeTruthy()
+  expect(engineerBox, 'hdr-role-engineer should have a bounding box').toBeTruthy()
+  expect(ctaBox, 'download-cv should have a bounding box').toBeTruthy()
 
   const avatarFrameBox = await page.locator('[data-testid="hdr-avatar"] .profile-frame').boundingBox()
   const nameBlockBox = await page.getByTestId('hdr-nameblock').boundingBox()
@@ -88,9 +109,9 @@ test('freezes right panel layout at 1920x1200', async ({ page }) => {
 
   const expected = {
     hdrRight: { x: 960, y: 1, width: 575, height: 158 },
-    hdrEmail: { x: 1038.390625, y: 57.41749954223633, width: 123.9375, height: 38.124996185302734 },
-    hdrLocation: { x: 1185.515625, y: 57.41749954223633, width: 123.953125, height: 38.124996185302734 },
-    hdrStatus: { x: 1332.65625, y: 57.41749954223633, width: 123.9375, height: 38.124996185302734 },
+    hdrEmail: { x: 1025.5390625, y: 57.41749954223633, width: 123.9375, height: 38.124996185302734 },
+    hdrLocation: { x: 1172.6640625, y: 57.41749954223633, width: 123.953125, height: 38.124996185302734 },
+    hdrStatus: { x: 1319.8046875, y: 57.41749954223633, width: 123.9375, height: 38.124996185302734 },
   }
 
   const rightBox = await page.getByTestId('hdr-right').boundingBox()
@@ -103,13 +124,55 @@ test('freezes right panel layout at 1920x1200', async ({ page }) => {
   expectBoxClose(locationBox, expected.hdrLocation)
   expectBoxClose(statusBox, expected.hdrStatus)
 
+  const grid = 20
+  const targetEngineerGap = 2 * grid
+
+  const cardCenterX = cardBox.x + cardBox.width / 2
+  const cardRightX = cardBox.x + cardBox.width
+  const dividerCenterX = dividerBox.x + dividerBox.width / 2
+  const engineerEndX = engineerBox.x + engineerBox.width
+  const anchorCenterX = anchorBox.x + anchorBox.width / 2
+  const ctaLeftX = ctaBox.x
+  const ctaCenterX = ctaBox.x + ctaBox.width / 2
+
+  const engineerGap = dividerCenterX - engineerEndX
+  const rightOuterGap = cardRightX - (statusBox.x + statusBox.width)
+  const m1 = locationBox.x - (emailBox.x + emailBox.width)
+  const m2 = statusBox.x - (locationBox.x + locationBox.width)
+  const dividerToEmailGap = emailBox.x - dividerCenterX
+
+  const dividerShiftPx = dividerCenterX - cardCenterX
+  const ctaTransform = await page.getByTestId('hdr-cta').evaluate((el) => window.getComputedStyle(el).transform)
+  const ctaShiftPx = parseTranslateX(ctaTransform)
+
+  const dividerShiftNeededPx = engineerEndX + targetEngineerGap - dividerCenterX
+  const ctaShiftNeededPx = anchorCenterX - ctaLeftX
+  const ctaShiftTargetPx = ctaShiftPx + ctaShiftNeededPx
+
+  console.log('[hdr] 1920x1200 metrics', {
+    dividerShiftPx,
+    ctaShiftPx,
+    ctaShiftTargetPx,
+    engineerGap,
+    dividerToEmailGap,
+    rightOuterGap,
+    M1: m1,
+    M2: m2,
+    dividerShiftNeededPx,
+    ctaShiftNeededPx,
+  })
+
+  expect(Math.abs(ctaLeftX - anchorCenterX), 'cta left edge aligned under role anchor').toBeLessThanOrEqual(1)
+  expect(Math.abs(engineerGap - targetEngineerGap), 'divider is 40px after Engineer').toBeLessThanOrEqual(1)
+  expect(Math.abs(dividerToEmailGap - rightOuterGap), 'right side spacing symmetric around divider').toBeLessThanOrEqual(1)
+
   const { innerWidth, scrollWidth } = await page.evaluate(() => ({
     innerWidth: window.innerWidth,
     scrollWidth: document.documentElement.scrollWidth,
   }))
   expect(scrollWidth, 'no horizontal overflow').toBeLessThanOrEqual(innerWidth)
 
-  await expect(page.getByTestId('hdr-card')).toHaveScreenshot('header-1920.png', {
+  await expect(page.getByTestId('hdr-card')).toHaveScreenshot('header-1920x1200.png', {
     animations: 'disabled',
     caret: 'hide',
   })
@@ -121,11 +184,15 @@ test('no horizontal overflow across common viewports', async ({ page }) => {
   await page.getByTestId('hdr-card').waitFor()
 
   const viewports = [
-    { width: 320, height: 800 },
-    { width: 375, height: 800 },
-    { width: 768, height: 900 },
-    { width: 1024, height: 900 },
     { width: 1920, height: 1200 },
+    { width: 1536, height: 864 },
+    { width: 1440, height: 900 },
+    { width: 1280, height: 720 },
+    { width: 1024, height: 768 },
+    { width: 768, height: 1024 },
+    { width: 430, height: 932 },
+    { width: 375, height: 812 },
+    { width: 320, height: 568 },
   ]
 
   for (const viewport of viewports) {

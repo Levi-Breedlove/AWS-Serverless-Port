@@ -200,7 +200,7 @@ svg {
   position: absolute;
   top: clamp(0.35rem, 0.7vw, 0.7rem);
   bottom: clamp(0.35rem, 0.7vw, 0.7rem);
-  left: 50%;
+  left: calc(50% + var(--divider-shift));
   width: var(--divider-width);
   transform: translateX(-50%);
   pointer-events: none;
@@ -243,7 +243,7 @@ svg {
   align-items: center;
   padding-left: 0;
   padding-right: 0;
-  transform: translateY(clamp(-0.22rem, -0.2vw, -0.12rem));
+  transform: translateX(calc(var(--divider-shift) / 2)) translateY(clamp(-0.22rem, -0.2vw, -0.12rem));
 }
 
 .top-profile-action {
@@ -252,6 +252,7 @@ svg {
   align-items: center;
   margin: 0;
   padding: 0;
+  transform: translateX(var(--cta-shift));
 }
 
 .top-profile-name {
