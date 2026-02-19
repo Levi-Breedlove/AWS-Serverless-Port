@@ -77,7 +77,22 @@
     'const token = process.env.AWS_SESSION_TOKEN ?? "ephemeral";',
   ]
   const frameInterval = 1000 / 120
-  const typingCharsPerSecond = 420
+  const steadyCharsPerSecond = 340
+  const singleCharCharsPerSecond = 42
+  const streamCharsPerSecond = 3600
+  const humanBurstMinChars = 5
+  const humanBurstMaxChars = 15
+  const humanBurstPauseMinMs = 70
+  const humanBurstPauseMaxMs = 180
+  const steadyPhaseMinMs = 520
+  const pauseBeforeSingleMs = 900
+  const singlePhaseMinMs = 600
+  const singlePhaseMaxMs = 2600
+  const PHASE_HUMAN = 'human-burst'
+  const PHASE_STEADY = 'steady'
+  const PHASE_PAUSE = 'pause'
+  const PHASE_SINGLE = 'single-char'
+  const PHASE_STREAM = 'stream'
   const maxDpr = 2
   const xPad = 0
   const yPad = 0
@@ -93,11 +108,13 @@
   let energies = []
   let rowSources = []
   let cursor = null
-  let charsPerMs = typingCharsPerSecond / 1000
   let charAccumulator = 0
-  let startupPhaseActive = true
-  let startupBackspaceBurstsLeft = 4
-  let startupBackspaceCooldownMs = 0
+  let phase = PHASE_HUMAN
+  let phaseElapsedMs = 0
+  let humanBurstCooldownMs = 0
+  let humanPhaseDepthTarget = 5
+  let steadyPhaseDepthTarget = 7
+  let singlePhaseDepthTarget = 8
   let pendingBackspaces = 0
   let rafId = 0
   let lastFrameTime = 0
@@ -105,13 +122,6 @@
   const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
   const pickSnippet = () => snippets[(Math.random() * snippets.length) | 0]
   const rowLimit = () => Math.max(1, columns - 1)
-  const startupBoostDepth = 0.75
-<<<<<<< ours
-  const fastStartRowTarget = 8
-  const postStartupMultiplier = 3.4
-=======
-  const postStartupMultiplier = 1.95
->>>>>>> theirs
 
   const buildCodeLine = () => {
     const targetLength = Math.max(56, columns + 28)
@@ -147,11 +157,14 @@
     energies = Array.from({ length: rows }, () => 0)
     rowSources = Array.from({ length: rows }, () => buildCodeLine())
     cursor = createCursor()
-    charsPerMs = typingCharsPerSecond / 1000
     charAccumulator = 0
-    startupPhaseActive = true
-    startupBackspaceBurstsLeft = 4
-    startupBackspaceCooldownMs = 0
+    phase = PHASE_HUMAN
+    phaseElapsedMs = 0
+    humanBurstCooldownMs = 0
+    const maxDepth = Math.max(2, rows - 1)
+    humanPhaseDepthTarget = Math.min(5, Math.max(4, maxDepth - 2))
+    steadyPhaseDepthTarget = Math.min(maxDepth, humanPhaseDepthTarget + 2)
+    singlePhaseDepthTarget = Math.min(maxDepth, steadyPhaseDepthTarget + 1)
     pendingBackspaces = 0
   }
 
@@ -192,56 +205,89 @@
     rowSources[cursor.row] = buildCodeLine()
   }
 
-  const startupDepthRows = () => {
+  const streamDepthRows = () => {
     if (!cursor || rows === 0) return 0
     const limit = rowLimit()
     const currentRowFill = (lines[cursor.row]?.length || 0) / Math.max(1, limit)
     return cursor.row + currentRowFill
   }
 
-  const fastStartRow = () => Math.min(fastStartRowTarget, Math.max(2, rows - 2))
-
-  const startupProgress = () => {
-    if (rows === 0) return 0
-    const cursorDepth = startupDepthRows()
-    const targetDepth = Math.max(1, rows * startupBoostDepth)
-    return clamp(cursorDepth / targetDepth, 0, 1)
+  const setPhase = (nextPhase) => {
+    if (phase === nextPhase) return
+    phase = nextPhase
+    phaseElapsedMs = 0
+    charAccumulator = 0
+    if (phase === PHASE_HUMAN) {
+      humanBurstCooldownMs = 0
+    }
   }
 
-  const speedMultiplier = (depthRows, fastRow) => {
-    if (!startupPhaseActive) return postStartupMultiplier
-<<<<<<< ours
-<<<<<<< ours
-    if (depthRows < fastRow) return 0.42
-    return postStartupMultiplier
-=======
-    if (progress < 0.3) return 0.42
-=======
-    if (progress < 0.25) return 0.42
->>>>>>> theirs
-    if (progress < 0.58) return 1.52
-    return 0.78
->>>>>>> theirs
+  const progressPhase = (depthRows, deltaMs) => {
+    phaseElapsedMs += deltaMs
+
+    if (phase === PHASE_HUMAN && (depthRows >= humanPhaseDepthTarget || phaseElapsedMs >= 3200)) {
+      setPhase(PHASE_STEADY)
+      return
+    }
+
+    if (
+      phase === PHASE_STEADY &&
+      ((depthRows >= steadyPhaseDepthTarget && phaseElapsedMs >= steadyPhaseMinMs) || phaseElapsedMs >= 1800)
+    ) {
+      setPhase(PHASE_PAUSE)
+      return
+    }
+
+    if (phase === PHASE_PAUSE && phaseElapsedMs >= pauseBeforeSingleMs) {
+      setPhase(PHASE_SINGLE)
+      return
+    }
+
+    if (
+      phase === PHASE_SINGLE &&
+      ((depthRows >= singlePhaseDepthTarget && phaseElapsedMs >= singlePhaseMinMs) || phaseElapsedMs >= singlePhaseMaxMs)
+    ) {
+      setPhase(PHASE_STREAM)
+    }
   }
 
-  const queueBackspaceBurst = (progress, depthRows, fastRow) => {
-    if (!startupPhaseActive || pendingBackspaces > 0 || startupBackspaceBurstsLeft <= 0) return
-<<<<<<< ours
-    if (depthRows >= fastRow) return
-=======
->>>>>>> theirs
-    if (startupBackspaceCooldownMs > 0) return
-    if (progress < 0.12 || progress > 0.9) return
+  const stepBudgetForPhase = (deltaMs) => {
+    if (!cursor) return 0
 
-    const activeLine = lines[cursor.row] || ''
-    if (activeLine.length < 8 || cursor.col < 2) return
+    if (phase === PHASE_PAUSE) return 0
 
-    const chance = progress < 0.55 ? 0.18 : 0.11
-    if (Math.random() > chance) return
+    if (phase === PHASE_HUMAN) {
+      humanBurstCooldownMs = Math.max(0, humanBurstCooldownMs - deltaMs)
+      if (humanBurstCooldownMs > 0) return 0
 
-    pendingBackspaces = 1 + ((Math.random() * 3) | 0)
-    startupBackspaceBurstsLeft -= 1
-    startupBackspaceCooldownMs = 130 + Math.random() * 170
+      const activeLine = lines[cursor.row] || ''
+      if (pendingBackspaces === 0 && activeLine.length > 7 && Math.random() < 0.19) {
+        pendingBackspaces = 1 + ((Math.random() * 2) | 0)
+      }
+
+      humanBurstCooldownMs = humanBurstPauseMinMs + Math.random() * (humanBurstPauseMaxMs - humanBurstPauseMinMs)
+      return humanBurstMinChars + ((Math.random() * (humanBurstMaxChars - humanBurstMinChars + 1)) | 0)
+    }
+
+    const charsPerMs =
+      phase === PHASE_STEADY
+        ? steadyCharsPerSecond / 1000
+        : phase === PHASE_SINGLE
+          ? singleCharCharsPerSecond / 1000
+          : streamCharsPerSecond / 1000
+
+    charAccumulator += deltaMs * charsPerMs
+
+    if (phase === PHASE_SINGLE) {
+      if (charAccumulator < 1) return 0
+      charAccumulator -= 1
+      return 1
+    }
+
+    const steps = Math.floor(charAccumulator)
+    if (steps < 1) return 0
+    charAccumulator -= steps
+    return steps
   }
 
   const update = (deltaMs) => {
@@ -251,36 +297,11 @@
       energies[index] *= 0.989
     }
 
-    startupBackspaceCooldownMs = Math.max(0, startupBackspaceCooldownMs - deltaMs)
-    const progress = startupProgress()
-<<<<<<< ours
-    const depthRows = startupDepthRows()
-    const fastRow = fastStartRow()
-    const multiplier = speedMultiplier(depthRows, fastRow)
-=======
-    const multiplier = speedMultiplier(progress)
->>>>>>> theirs
-    charAccumulator += deltaMs * charsPerMs * multiplier
-    let steps = Math.min(2600, Math.floor(charAccumulator))
+    const depthRows = streamDepthRows()
+    progressPhase(depthRows, deltaMs)
+
+    let steps = Math.min(3200, stepBudgetForPhase(deltaMs))
     if (steps < 1) return
-    charAccumulator -= steps
-
-    if (startupPhaseActive && progress >= 1) {
-      startupPhaseActive = false
-      pendingBackspaces = 0
-      startupBackspaceBurstsLeft = 0
-    }
-
-<<<<<<< ours
-    if (depthRows >= fastRow) {
-      pendingBackspaces = 0
-      startupBackspaceBurstsLeft = 0
-    }
-
-    queueBackspaceBurst(progress, depthRows, fastRow)
-=======
-    queueBackspaceBurst(progress)
->>>>>>> theirs
 
     const limit = rowLimit()
 

@@ -59,6 +59,24 @@ a {
   text-decoration: none;
 }
 
+/* Show hand cursor for all interactive controls/links */
+a[href]:not([aria-disabled="true"]),
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+input[type="button"]:not(:disabled),
+input[type="submit"]:not(:disabled),
+input[type="reset"]:not(:disabled),
+summary,
+label[for],
+[onclick] {
+  cursor: pointer;
+}
+
+button:disabled,
+input:disabled {
+  cursor: not-allowed;
+}
+
 img,
 svg {
   display: block;
@@ -699,6 +717,11 @@ svg {
     0 14px 30px rgba(0, 0, 0, 0.34);
 }
 
+#sideNav .side-link,
+#sideNav .side-link * {
+  cursor: pointer;
+}
+
 /* Side nav link base (same vibe as nav item, but for anchors) */
 .side-link {
   position: relative;
@@ -781,27 +804,11 @@ svg {
     0 0 7px rgba(99, 102, 241, 0.4);
 }
 
-.side-link:not(.is-active):hover .side-active-bar {
-  opacity: 1;
-  left: -1.5px;
-  top: -1px;
-  bottom: -1px;
-  background: linear-gradient(180deg, rgba(16, 185, 129, 0.95), rgba(16, 185, 129, 0.55));
-  box-shadow:
-    0 0 16px rgba(16, 185, 129, 0.54),
-    0 0 7px rgba(16, 185, 129, 0.4);
-}
-
+.side-link:not(.is-active):hover .side-active-bar,
 .side-link:not(.is-active):active .side-active-bar,
 .side-link:not(.is-active):focus-visible .side-active-bar {
-  opacity: 1;
-  left: -1.5px;
-  top: -1px;
-  bottom: -1px;
-  background: linear-gradient(180deg, rgba(16, 185, 129, 0.95), rgba(16, 185, 129, 0.55));
-  box-shadow:
-    0 0 18px rgba(16, 185, 129, 0.58),
-    0 0 8px rgba(16, 185, 129, 0.42);
+  opacity: 0;
+  box-shadow: none;
 }
 
 .section-card {
