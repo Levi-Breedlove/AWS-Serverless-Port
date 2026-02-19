@@ -268,8 +268,7 @@ svg {
 
 .top-profile-meta {
   --meta-inline-space: clamp(0.95rem, 1.3vw, 1.45rem);
-  --meta-start-space: clamp(2.7rem, 3.4vw, 3.5rem);
-  --meta-end-space: clamp(1.15rem, 1.6vw, 1.75rem);
+  --meta-side-space: clamp(1.9rem, 2.5vw, 2.4rem);
   margin-top: 0;
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -281,8 +280,8 @@ svg {
   min-height: clamp(96px, 6.9vw, 124px);
   width: 100%;
   align-items: center;
-  padding-left: var(--meta-start-space);
-  padding-right: var(--meta-end-space);
+  padding-inline: var(--meta-side-space);
+  transform: translateX(clamp(0.45rem, 0.8vw, 0.9rem));
   border-left: 1px solid rgba(76, 94, 124, 0.58);
 }
 
@@ -511,6 +510,7 @@ svg {
   .top-profile-meta {
     padding-left: 0;
     padding-right: 0;
+    transform: none;
     border-left: 0;
   }
 

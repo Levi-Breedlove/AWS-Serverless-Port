@@ -2,6 +2,7 @@
   "name": "portfolio-aws",
   "private": true,
   "scripts": {
+    "dev": "node dev-server.js",
     "test:cv-layout": "playwright test tests/cv-button-layout.spec.js",
     "test:cv-layout:update": "playwright test tests/cv-button-layout.spec.js --update-snapshots"
   },

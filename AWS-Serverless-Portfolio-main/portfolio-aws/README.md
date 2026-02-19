@@ -11,12 +11,20 @@ This project is a static website built with:
 
 No React or build tooling is required.
 
-Open `index.html` directly in a browser, or serve the folder with any static server.
-
-Example:
+Use npm dev server:
 
 ```bash
-cd portfolio-react
+cd AWS-Serverless-Portfolio-main/portfolio-aws
+npm install
+npm run dev
+```
+
+Then open `http://127.0.0.1:4173`.
+
+Or serve the folder with any static server. Example:
+
+```bash
+cd AWS-Serverless-Portfolio-main/portfolio-aws
 python3 -m http.server 8080
 ```
 
