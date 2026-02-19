@@ -169,13 +169,14 @@
 
             <div class="top-profile-action">
               <a
-                class="btn primary btn-static btn-cv btn-dust-in inline-flex items-center justify-center rounded-full border border-white/10"
+                class="btn primary btn-static btn-cv btn-dust-in !inline-flex items-center justify-center box-border shrink-0 rounded-full border border-white/10 [--btn-w:clamp(122px,8.8vw,142px)] [--btn-h:clamp(32px,2.5vw,38px)] [--ring-thickness:4px]"
                 style="--d: 240ms;"
                 href="data:text/csv;charset=utf-8,Section%2CItem%2CDetails%0AProfile%2CName%2CLevi%20Breedlove%0AProfile%2CTitle%2CAWS%20Cloud%20Application%20Developer%0AProfile%2CEmail%2Clevi%40cloud.dev%0A"
                 download="Levi-Breedlove-CV.csv"
                 aria-label="Download CV"
+                data-testid="download-cv"
               >
-                <span class="btn__surface inline-flex h-full w-full items-center justify-center gap-1.5 rounded-full border border-indigo-300/20 px-3 py-1 font-extrabold uppercase tracking-[0.08em] text-slate-100">
+                <span class="btn__surface inline-flex h-full w-full box-border items-center justify-center gap-1.5 rounded-full border border-indigo-300/20 font-extrabold uppercase tracking-[0.08em] leading-none text-slate-100">
                   Download CV
                   <svg
                     aria-hidden="true"

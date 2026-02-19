@@ -248,15 +248,6 @@ svg {
   }
 }
 
-.top-profile-action .btn.primary {
-  --btn-w: clamp(122px, 8.8vw, 142px);
-  --btn-h: clamp(32px, 2.5vw, 38px);
-}
-
-.top-profile-action .btn.primary .btn__surface {
-  padding-inline: clamp(0.58rem, 0.9vw, 0.9rem);
-}
-
 .top-profile-name {
   margin: -0.18rem 0 0;
   font-size: clamp(1.25rem, 1.75vw, 1.8rem);
@@ -606,8 +597,6 @@ svg {
 .btn.btn-cv::before {
   --ring-grad: linear-gradient(135deg, rgba(99, 102, 241, 0.95), rgba(99, 102, 241, 0.55));
   background: var(--ring-grad);
-  /* Keep top/bottom as-is, extend only left/right so the rim reads evenly. */
-  inset: 0 -2px;
 }
 
 .btn__surface {
